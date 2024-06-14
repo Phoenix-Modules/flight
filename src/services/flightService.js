@@ -4,7 +4,7 @@ import {
     getItemFromChatMessage
 } from "./chatMessageService";
 import {addEffectIfMissing, deleteEffectIfExists, hasEffect} from "./actorService";
-import {getAcAdjustmentValue, getIncrementValue, getMaxFlightHeightValue} from "./settingsService";
+import {getAcAdjustmentValue, getIncrementValue, getMaxFlightHeightValue, getTokenScaleValue} from "./settingsService";
 import Features from "../constants/features";
 import {scaleToken} from "./tokenService";
 
@@ -67,32 +67,44 @@ async function updateFlyingStatus(actor, status) {
 async function handleFlightCommand(command, actor, token) {
     const incrementValue = getIncrementValue();
     const maxHeight = getMaxFlightHeightValue();
+    const shouldScaleToken = getTokenScaleValue();
     const currentElevation = token.document.elevation;
+        
+    let updateFlightStatus = false;
+    let flightStatus;
+    let newElevation;
+    
     switch (command) {
         case "Take Flight":
-            await updateFlyingStatus(actor, true);
-            await updateTokenElevation(token, incrementValue);
-            await scaleToken(token, incrementValue);
+            updateFlightStatus = true;
+            flightStatus = true;
+            newElevation = incrementValue;
             break;
         case "Land":
             if(!await hasEffect(actor, "Flying")) return;
-            await updateFlyingStatus(actor, false);
-            await updateTokenElevation(token, 0);
-            await scaleToken(token, 0);
+            updateFlightStatus = true;
+            flightStatus = false;
+            newElevation = 0;            
             break;
         case "Fly Higher":
             if(!await hasEffect(actor, "Flying")) return;
-            const newElevationUp = Math.min((currentElevation || 0) + incrementValue, maxHeight);
-            await updateTokenElevation(token, newElevationUp);
-            await scaleToken(token, newElevationUp);
-            return false;
+            updateFlightStatus = false;
+            newElevation = Math.min((currentElevation || 0) + incrementValue, maxHeight);            
+            break;
         case "Fly Lower":
             if(!await hasEffect(actor, "Flying")) return;
-            const newElevationDown = Math.max((currentElevation || 0) - incrementValue, incrementValue);
-            await updateTokenElevation(token, newElevationDown);
-            await scaleToken(token, newElevationDown);
-            return false;
+            updateFlightStatus = false;
+            newElevation = Math.max((currentElevation || 0) - incrementValue, incrementValue);
+            break;
         default:
             console.warn(`Unknown flight command: ${command}`);
     }
+
+    if(updateFlightStatus) {
+        await updateFlyingStatus(actor, flightStatus);        
+    }
+    if(shouldScaleToken) {
+        await scaleToken(token, newElevation);
+    }
+    await updateTokenElevation(token, newElevation);
 }

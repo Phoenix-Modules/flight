@@ -69,3 +69,7 @@ export function getIncrementValue() {
 export function getAcAdjustmentValue() {
     return game.settings.get(moduleData.moduleName, Settings.AcAdjustmentKey);
 }
+
+export function getTokenScaleValue() {
+    return game.settings.get(moduleData.moduleName, Settings.TokenScaleKey);
+}
