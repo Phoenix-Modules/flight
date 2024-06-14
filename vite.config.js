@@ -64,7 +64,7 @@ export default defineConfig({
             },
         },
     },
-    plugins: [
+    plugins: [        
         copy({
             targets: [
                 { src: "src/packs", dest: "dist" },
@@ -80,6 +80,7 @@ export default defineConfig({
                 return null; // Skip copying if the file has not changed
             }            
         }),
+        updateModuleManifestPlugin()
     ],
 });
 
