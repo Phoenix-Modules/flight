@@ -7,6 +7,7 @@ import {addEffectIfMissing, deleteEffectIfExists, hasEffect} from "./actorServic
 import {getAcAdjustmentValue, getIncrementValue, getMaxFlightHeightValue, getTokenScaleValue} from "./settingsService";
 import Features from "../constants/features";
 import {scaleToken} from "./tokenService";
+import {animateFlying, animateLanding} from "./animationService";
 
 const flightItems = ["Take Flight", "Land", "Fly Higher", "Fly Lower"];
 
@@ -42,8 +43,11 @@ async function updateTokenElevation(token, elevation) {
     await token.document.update({ elevation: elevation });
 }
 
-async function updateFlyingStatus(actor, status) {
+async function updateFlyingStatus(actor, token, status) {
     const acAdjustment = getAcAdjustmentValue();
+    const isJb2a = game.modules.get('jb2a_patreon')?.active;
+    const isSequencer = game.modules.get('sequencer')?.active;
+    
     const effectData = {
         label: "Flying",
         icon: Features.FlyingImage,
@@ -58,8 +62,14 @@ async function updateFlyingStatus(actor, status) {
     
 
     if (status) {
+        if(isJb2a && isSequencer) {
+            animateFlying(token);
+        }
         await addEffectIfMissing(actor, effectData);
     } else {
+        if(isJb2a && isSequencer) {
+            animateLanding(token);
+        }
         await deleteEffectIfExists(actor, effectData.label);
     }
 }
@@ -101,7 +111,7 @@ async function handleFlightCommand(command, actor, token) {
     }
 
     if(updateFlightStatus) {
-        await updateFlyingStatus(actor, flightStatus);        
+        await updateFlyingStatus(actor, token, flightStatus);        
     }
     if(shouldScaleToken) {
         await scaleToken(token, newElevation);
