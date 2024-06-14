@@ -1,0 +1,14 @@
+{
+  "name": "phoenix-modules-flight",
+  "version": "1.0.0",
+  "description": "A template project for FoundryVTT modules using TypeScript",
+  "license": "GNU",
+  "private": false,
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "rollup-plugin-copy": "^3.5.0",
+    "vite": "^5.2.13"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "phoenix-modules-flight",
+  "title": "Phoenix Modules - Flight",
+  "description": "A module allowing player characters with flight ability to do so",
+  "authors": [
+    {
+      "name": "Brandin canterbury",
+      "email": "brandincanterbury@gmail.com"
+    }
+  ],
+  "packs": [
+    {
+      "name": "flight-features",
+      "label": "Flight Features",
+      "type": "Item",
+      "system": "dnd5e",
+      "banner" : "modules/phoenix-modules-flight/images/Module Banner.png"
+    }
+  ],
+  "packFolders": [{
+    "name": "Phoenix Modules",
+    "sorting": "a",
+    "color": "#000000",
+    "packs": ["flight-features", "flight-macros"]
+  }],
+  "esmodules": ["scripts/module.js"],
+  "version": "#{VERSION}#",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  },
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "media": [
+    {
+      "type": "icon",
+      "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+    }
+  ]
+}
