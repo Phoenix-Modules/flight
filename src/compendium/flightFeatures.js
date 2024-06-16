@@ -96,6 +96,9 @@ export const flightFeatures = [
             },
             source: {},
             activation: {
+                type: "action",
+                cost: 1,
+                condition: ""
             },
             duration: {
                 value: "",
@@ -178,6 +181,9 @@ export const flightFeatures = [
             },
             source: {},
             activation: {
+                type: "action",
+                cost: 1,
+                condition: ""
             },
             duration: {
                 value: "",
@@ -260,6 +266,9 @@ export const flightFeatures = [
             },
             source: {},
             activation: {
+                type: "action",
+                cost: 1,
+                condition: ""
             },
             duration: {
                 value: "",
