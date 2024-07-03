@@ -42,7 +42,7 @@
     "color": "#000000",
     "packs": ["flight-features"]
   }],
-  "esmodules": ["scripts/module.js"],
+  "esmodules": ["scripts/pm-flight.js"],
   "version": "#{VERSION}#",
   "compatibility": {
     "minimum": "11",
