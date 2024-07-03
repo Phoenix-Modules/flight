@@ -1,9 +1,7 @@
-import {moduleData} from "../constants/moduleData";
-import Settings from "../constants/settings";
-import Features from "../constants/features";
+import { MODULE_NAME, SETTINGS, FEATURES} from "../constants/moduleConstants";
 
 export async function registerSettings() {
-    game.settings.register(moduleData.moduleName, Settings.FlightHeightKey, {
+    game.settings.register(MODULE_NAME, SETTINGS.FlightHeightKey, {
         name: 'Max Flight Height',
         hint: 'The maximum height (in feet) that a character can fly.',
         scope: 'world', 
@@ -16,9 +14,9 @@ export async function registerSettings() {
         }
     });
 
-    game.settings.register(moduleData.moduleName, Settings.IncrementKey, {
+    game.settings.register(MODULE_NAME, SETTINGS.IncrementKey, {
         name: 'Raise/Lower Increment',
-        hint: `The increment (in feet) that a character moves when using the ${Features.RaiseLabel}/${Features.LowerLabel} feature.`,
+        hint: `The increment (in feet) that a character moves when using the ${FEATURES.RaiseLabel}/${FEATURES.LowerLabel} feature.`,
         scope: 'world',
         config: true,
         type: Number,
@@ -29,7 +27,7 @@ export async function registerSettings() {
         }
     });
 
-    game.settings.register(moduleData.moduleName, Settings.AcAdjustmentKey, {
+    game.settings.register(MODULE_NAME, SETTINGS.AcAdjustmentKey, {
         name: 'Adjust AC when flying',
         hint: 'How much AC (positive or negative) to adjust when in flying state',
         scope: 'world',
@@ -42,7 +40,7 @@ export async function registerSettings() {
         }
     });
 
-    game.settings.register(moduleData.moduleName, Settings.TokenScaleKey, {
+    game.settings.register(MODULE_NAME, SETTINGS.TokenScaleKey, {
         name: 'Scale Token with Height',
         hint: 'Scale the token bigger or smaller depending on height',
         scope: 'world',
@@ -58,18 +56,18 @@ export async function registerSettings() {
 
 
 export function getMaxFlightHeightValue() {
-    return game.settings.get(moduleData.moduleName, Settings.FlightHeightKey);
+    return game.settings.get(MODULE_NAME, SETTINGS.FlightHeightKey);
 }
 
 
 export function getIncrementValue() {
-    return game.settings.get(moduleData.moduleName, Settings.IncrementKey);
+    return game.settings.get(MODULE_NAME, SETTINGS.IncrementKey);
 }
 
 export function getAcAdjustmentValue() {
-    return game.settings.get(moduleData.moduleName, Settings.AcAdjustmentKey);
+    return game.settings.get(MODULE_NAME, SETTINGS.AcAdjustmentKey);
 }
 
 export function getTokenScaleValue() {
-    return game.settings.get(moduleData.moduleName, Settings.TokenScaleKey);
+    return game.settings.get(MODULE_NAME, SETTINGS.TokenScaleKey);
 }
