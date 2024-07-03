@@ -1,46 +1,36 @@
-import {
-    getActorFromChatMessage,
-    getCurrentSceneTokenFromChatMessage,
-    getItemFromChatMessage
-} from "./chatMessageService";
-import {addEffectIfMissing, deleteEffectIfExists, hasEffect} from "./actorService";
 import {getAcAdjustmentValue, getIncrementValue, getMaxFlightHeightValue, getTokenScaleValue} from "./settingsService";
-import Features from "../constants/features";
-import {scaleToken} from "./tokenService";
-import {animateFlying, animateLanding} from "./animationService";
+import {FEATURES, MODULE_NAME} from "../constants/moduleConstants";
+import { animateFlying, animateLanding } from "./animationService";
+import {ChatMessageService, EffectService, PhxConst} from "@phoenix-modules/common-library";
 
 const flightItems = ["Take Flight", "Land", "Fly Higher", "Fly Lower"];
 
-export async function parseChatForFlight(chatMessage, messageText, chatData) {
-    const itemUsed = await getItemFromChatMessage(chatMessage);
+export async function handleFlightFeatures(chatMessage, messageText, chatData) {
+    const itemUsed = await ChatMessageService.GetItemFromChatMessage(chatMessage);
     if(!itemUsed) return;
     
     const command = flightItems.find(flightItem => itemUsed.name === flightItem);
     if(!command) return;
        
-    const initiatingActorToken = await getCurrentSceneTokenFromChatMessage(chatMessage);
+    const initiatingActorToken = await ChatMessageService.GetCurrentSceneTokenFromChatMessage(chatMessage);
     const controlledToken = canvas.tokens.controlled[0];
     
     if(game.user.isGM) {
         if(!controlledToken) {
             ui.notifications.warn("Please select a token to initiate flight on.");
+            return;
         }
         await handleFlightCommand(command, controlledToken.actor, controlledToken);
         return;
     }
     
 
-    if(initiatingActorToken.actorId !== controlledToken.document.actorid) {
+    if(initiatingActorToken.actorId !== controlledToken.document.actorId) {
         ui.notifications.warn("Please select your token to use this action.");
         return;
     }
     
     await handleFlightCommand(command, controlledToken.actor, controlledToken);    
-}
-
-async function updateTokenElevation(token, elevation) {    
-    if(token.document.elevation === elevation) return;
-    await token.document.update({ elevation: elevation });
 }
 
 async function updateFlyingStatus(actor, token, status) {
@@ -50,7 +40,7 @@ async function updateFlyingStatus(actor, token, status) {
     
     const effectData = {
         label: "Flying",
-        icon: Features.FlyingImage,
+        icon: FEATURES.FlyingImage,
         changes: [
             { key: "system.attributes.ac.bonus", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: acAdjustment }
         ],
@@ -65,12 +55,12 @@ async function updateFlyingStatus(actor, token, status) {
         if(isJb2a && isSequencer) {
             animateFlying(token);
         }
-        await addEffectIfMissing(actor, effectData);
+        await window.PhoenixSocketLib[MODULE_NAME].executeAsGM(PhxConst.SOCKET_METHOD_NAMES.ADD_EFFECT, actor, effectData);
     } else {
         if(isJb2a && isSequencer) {
             animateLanding(token);
         }
-        await deleteEffectIfExists(actor, effectData.label);
+        await window.PhoenixSocketLib[MODULE_NAME].executeAsGM(PhxConst.SOCKET_METHOD_NAMES.REMOVE_EFFECT, actor, effectData.label);
     }
 }
 
@@ -78,7 +68,7 @@ async function handleFlightCommand(command, actor, token) {
     const incrementValue = getIncrementValue();
     const maxHeight = getMaxFlightHeightValue();
     const shouldScaleToken = getTokenScaleValue();
-    const currentElevation = token.document.elevation;
+    const currentElevation = token.document?.elevation;
         
     let updateFlightStatus = false;
     let flightStatus;
@@ -86,23 +76,24 @@ async function handleFlightCommand(command, actor, token) {
     
     switch (command) {
         case "Take Flight":
+            if(EffectService.HasEffect(actor, "Flying")) return;
             updateFlightStatus = true;
             flightStatus = true;
             newElevation = incrementValue;
             break;
         case "Land":
-            if(!await hasEffect(actor, "Flying")) return;
+            if(!EffectService.HasEffect(actor, "Flying")) return;
             updateFlightStatus = true;
             flightStatus = false;
             newElevation = 0;            
             break;
         case "Fly Higher":
-            if(!await hasEffect(actor, "Flying")) return;
+            if(!EffectService.HasEffect(actor, "Flying")) return;
             updateFlightStatus = false;
             newElevation = Math.min((currentElevation || 0) + incrementValue, maxHeight);            
             break;
         case "Fly Lower":
-            if(!await hasEffect(actor, "Flying")) return;
+            if(!EffectService.HasEffect(actor, "Flying")) return;
             updateFlightStatus = false;
             newElevation = Math.max((currentElevation || 0) - incrementValue, incrementValue);
             break;
@@ -114,7 +105,7 @@ async function handleFlightCommand(command, actor, token) {
         await updateFlyingStatus(actor, token, flightStatus);        
     }
     if(shouldScaleToken) {
-        await scaleToken(token, newElevation);
+        await window.PhoenixSocketLib[MODULE_NAME].executeAsGM(PhxConst.SOCKET_METHOD_NAMES.SCALE_TOKEN, token, newElevation);
     }
-    await updateTokenElevation(token, newElevation);
+    await window.PhoenixSocketLib[MODULE_NAME].executeAsGM(PhxConst.SOCKET_METHOD_NAMES.ELEVATE_TOKEN, token, newElevation);
 }

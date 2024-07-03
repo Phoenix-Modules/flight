@@ -20,7 +20,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install
 
       - name: Extract tag version number
         id: get_version
@@ -58,3 +58,10 @@ jobs:
           artifacts: "./dist/module.json, ./dist/module.zip"
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
+       
+      - name: Publish Module to FoundryVTT Website
+        id: publish-to-foundry-website
+        uses: cs96and/FoundryVTT-release-package@v1
+        with:
+          package-token: ${{ secrets.FOUNDRY_PACKAGE_TOKEN }}
+          manifest-url: https://github.com/${{github.repository}}/releases/latest/download/module.json

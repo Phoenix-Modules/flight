@@ -1,7 +1,8 @@
-import { parseChatForFlight } from './services/flightService.js';
+import { handleFlightFeatures } from './services/flightService.js';
 import { addFlightFeaturesToCompendium } from "./services/dataService.js";
 import {registerSettings} from "./services/settingsService";
-import Features from "./constants/features";
+import {SocketService} from "@phoenix-modules/common-library";
+import {FEATURES, MODULE_NAME} from "./constants/moduleConstants";
 
 Hooks.once("init", async () => {
     await registerSettings();
@@ -11,12 +12,13 @@ Hooks.once("init", async () => {
 
 Hooks.once('ready', async () => {
     await addFlightFeaturesToCompendium();
+    new SocketService(MODULE_NAME);
 });
 
 
 Hooks.on("preCreateChatMessage", (chatMessage, messageText, chatData) => {
-    parseChatForFlight(chatMessage, messageText, chatData);
-    const itemNamesToBlock = [Features.RaiseLabel, Features.LowerLabel];
+    handleFlightFeatures(chatMessage, messageText, chatData);
+    const itemNamesToBlock = [FEATURES.RaiseLabel, FEATURES.LowerLabel];
     const item = itemNamesToBlock.find(item => chatMessage.content.includes(item));
     if (item) {
         return false;

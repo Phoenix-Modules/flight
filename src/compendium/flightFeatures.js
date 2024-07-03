@@ -1,8 +1,8 @@
-import Features from "../constants/features";
+import {FEATURES} from "../constants/moduleConstants";
 
 export const flightFeatures = [
     {
-        name: Features.FlyingLabel,
+        name: FEATURES.FlyingLabel,
         type: "feat",
         system: {
             description: {
@@ -83,11 +83,11 @@ export const flightFeatures = [
                 charged: false
             }
         },
-        img: Features.FlyingImage,
+        img: FEATURES.FlyingImage,
         effects: []
     },
     {
-        name: Features.LandLabel,
+        name: FEATURES.LandLabel,
         type: "feat",
         system: {
             description: {
@@ -168,11 +168,11 @@ export const flightFeatures = [
                 charged: false
             }
         },
-        img: Features.LandImage,
+        img: FEATURES.LandImage,
         effects: []
     },
     {
-        name: Features.RaiseLabel,
+        name: FEATURES.RaiseLabel,
         type: "feat",
         system: {
             description: {
@@ -253,11 +253,11 @@ export const flightFeatures = [
                 charged: false
             }
         },
-        img: Features.RaiseImage,
+        img: FEATURES.RaiseImage,
         effects: []
     },
     {
-        name: Features.LowerLabel,
+        name: FEATURES.LowerLabel,
         type: "feat",
         system: {
             description: {
@@ -338,7 +338,7 @@ export const flightFeatures = [
                 charged: false
             }
         },
-        img: Features.LowerImage,
+        img: FEATURES.LowerImage,
         effects: []
     }
 ];

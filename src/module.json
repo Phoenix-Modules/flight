@@ -17,20 +17,29 @@
       }
     }
   ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "socketlib",
+        "type": "module"
+      }
+    ]
+  },
+  "socket": true,
   "packs": [
     {
       "name": "flight-features",
       "label": "Flight Features",
       "type": "Item",
       "system": "dnd5e",
-      "banner" : "modules/phoenix-modules-flight/images/Module Banner.png"
+      "banner" : "modules/phoenix-modules-flight/assets/images/Module Banner.png"
     }
   ],
   "packFolders": [{
     "name": "Phoenix Modules",
     "sorting": "a",
     "color": "#000000",
-    "packs": ["flight-features", "flight-macros"]
+    "packs": ["flight-features"]
   }],
   "esmodules": ["scripts/module.js"],
   "version": "#{VERSION}#",
@@ -46,6 +55,11 @@
   "media": [
     {
       "type": "setup",
+      "url": "https://i.imgur.com/Gl0Smdd.png",
+      "thumbnail": ""
+    },
+    {
+      "type": "cover",
       "url": "https://i.imgur.com/Gl0Smdd.png",
       "thumbnail": ""
     }
