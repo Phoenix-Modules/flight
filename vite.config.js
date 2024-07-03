@@ -12,7 +12,7 @@ export default defineConfig({
                 module: "src/module.js",
             },
             output: {
-                entryFileNames: "scripts/[name].js",
+                entryFileNames: "scripts/pm-flight.js",
                 format: "cjs",
                 dir: "dist",
             },

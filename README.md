@@ -2,6 +2,9 @@
 
 ![Module Background](https://github.com/Phoenix-Modules/flight/assets/7071396/b207910e-aff0-4bbc-8a61-e60ba7dae705)
 
+>**Report Issues:** https://github.com/Phoenix-Modules/flight/issues  
+> **Patreon:** https://www.patreon.com/PhoenixModules  
+> **Discord:** https://discord.gg/X3mRGgMdMn
 
 This Foundry VTT module adds comprehensive flight capabilities to your game, allowing tokens to gain flying status, update elevation, and customize various flight parameters.
 
