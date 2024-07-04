@@ -2,8 +2,7 @@ import {SOUNDS} from "../constants/moduleConstants";
 
 export function animateFlying(token) {
     new Sequence()
-        .sound()
-        .file(SOUNDS.FlappingWings)
+        .sound(SOUNDS.FlappingWings)
         .effect()
         .atLocation(token)
         .belowTokens(true)
@@ -15,8 +14,7 @@ export function animateFlying(token) {
 export function animateLanding(token) {
     const delay = token.document.elevation * 2 * 7;
     new Sequence()
-        .sound()
-        .file(SOUNDS.Landing)
+        .sound(SOUNDS.Landing)
         .effect()
         .delay(delay)
         .scale(0.5)

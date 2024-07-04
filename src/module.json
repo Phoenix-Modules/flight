@@ -42,6 +42,10 @@
     "color": "#000000",
     "packs": ["flight-features"]
   }],
+  "includes": [
+    "modules/phoenix-modules-flight/assets/images",
+    "modules/phoenix-modules-flight/assets/sounds"
+  ],
   "esmodules": ["scripts/pm-flight.js"],
   "version": "#{VERSION}#",
   "compatibility": {
